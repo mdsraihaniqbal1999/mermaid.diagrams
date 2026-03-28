@@ -1,18 +1,15 @@
 ```mermaid
 flowchart LR
-    subgraph Source[Telemetry Sources]
-    M(Prometheus Metrics) --> A(Alloy Receivers)
-    L(Kubernetes Logs) --> A
-    T(OTLP Traces) --> A
+    subgraph ELK["ELK Stack"]
+        direction TB
+        E1[Log Line] --> E2[Logstash Parser]
+        E2 --> E3[Elasticsearch\nFull-text index\nevery word indexed]
+        E3 --> E4[Kibana]
     end
-    subgraph AlloyPipeline[Alloy Processing Pipeline]
-    A --> Proc[Processors (e.g. relabel, filters)]
-    Proc --> Exp[Exporters]
-    end
-    subgraph Dest[Backends]
-    Exp --> Mimir[Grafana Mimir (Prometheus-Compatible)]
-    Exp --> Loki[Grafana Loki (Logs)]
-    Exp --> Tempo[Grafana Tempo (Traces)]
-    Exp --> OTel[Other OTLP Backends]
+    subgraph LOKI["Grafana Loki"]
+        direction TB
+        L1[Log Line] --> L2[Alloy\nattaches labels]
+        L2 --> L3[Loki\nLabels indexed only\ncontent compressed]
+        L3 --> L4[Grafana]
     end
 ```

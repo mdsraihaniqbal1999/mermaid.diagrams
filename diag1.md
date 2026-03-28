@@ -1,9 +1,9 @@
 ```mermaid
 flowchart LR
-    A[App Container\nstdout/stderr] --> B[Container Runtime\ncontainerd]
-    B --> C[/var/log/pods/\non the Node]
-    C --> D[/var/log/containers/\nsymlinks]
-    D --> E[Alloy DaemonSet\none per node]
-    E -->|attaches labels:\nnamespace, pod, container| F[Loki\nport 3100]
-    F --> G[Grafana\nport 3000]
+    A[App Container<br>stdout/stderr] --> B[Container Runtime<br>containerd]
+    B --> C[/var/log/pods/<br>on the Node]
+    C --> D[/var/log/containers/<br>symlinks]
+    D --> E[Alloy DaemonSet<br>one per node]
+    E -->|attaches labels:<br>namespace, pod, container| F[Loki<br>port 3100]
+    F --> G[Grafana<br>port 3000]
 ```

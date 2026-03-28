@@ -1,9 +1,9 @@
 ```mermaid
-flowchart LR
-    A["App Container<br>stdout/stderr"] --> B["Container Runtime<br>containerd"]
-    B --> C["/var/log/pods/<br>on the Node"]
-    C --> D["/var/log/containers/<br>symlinks"]
-    D --> E["Alloy DaemonSet<br>one per node"]
-    E -->|"attaches labels:<br>namespace, pod, container"| F["Loki<br>port 3100"]
-    F --> G["Grafana<br>port 3000"]
+ flowchart TD
+    A[App writes to stdout] --> B[containerd captures output]
+    B --> C["/var/log/pods/&lt;namespace&gt;_&lt;pod&gt;_&lt;uid&gt;/&lt;container&gt;/0.log"]
+    C --> D["/var/log/containers/&lt;pod&gt;_&lt;namespace&gt;_&lt;container&gt;-&lt;id&gt;.log\n(symlink to above)"]
+    D --> E[Alloy tails this directory\non every node]
+    E --> F[Alloy queries Kubernetes API\nto attach labels]
+    F --> G[Ships log streams to Loki]
 ```
